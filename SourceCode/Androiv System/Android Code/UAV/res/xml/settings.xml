@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+<PreferenceCategory android:title="Communication">
+	<CheckBoxPreference
+                android:key="chk_autostart"
+                android:title="Auto Start" 
+                android:summary="start automatically after rebooting."/>
+ 
+    <EditTextPreference
+                android:key="txt_ProtocolPort"
+                android:title="ID Port"
+                android:summary="Default is 45000"
+                android:dialogTitle="ID Port" />
+       <EditTextPreference
+                android:key="txt_UAVProtocolPort"
+                android:title="UAV Port"
+                android:summary="Default is 45001"
+                android:dialogTitle="UAV Port" />
+    <EditTextPreference
+                android:key="txt_VehicleName"
+                android:title="Vehicle Name"
+                android:summary="A name for your vehicle"
+                android:dialogTitle="Vehicle Name" />
+     
+</PreferenceCategory>
+
+<PreferenceCategory android:title="Flight Simulator">
+	<EditTextPreference
+                android:key="txt_FlightGearPort_In"
+                android:title="FlightGear Port_In" 
+                android:summary="Out port for Simulator not mobile."/>
+ 	<EditTextPreference
+                android:key="txt_FlightGearPort_Out"
+                android:title="FlightGear Port_Out" 
+                android:summary="Out port for Simulator not mobile."/>
+</PreferenceCategory>
+
+<PreferenceCategory android:title="Debug">
+	<CheckBoxPreference
+                android:key="log_gps"
+                android:title="log GPS" 
+                android:summary="logging GPS Data."/>
+ 	<CheckBoxPreference
+                android:key="log_gyro"
+                android:title="log Gyro" 
+                android:summary="logging Gyro Data."/>
+    <CheckBoxPreference
+                android:key="log_accelerometer"
+                android:title="log Accelerometer" 
+                android:summary="logging Accelerometer Data."/>
+    <CheckBoxPreference
+                android:key="log_magnetic"
+                android:title="log Magnetic" 
+                android:summary="logging Magnetic Data."/>
+</PreferenceCategory>
+</PreferenceScreen>

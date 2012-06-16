@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
+			<TableLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content" >
+
+						<TableRow
+							android:id="@+id/tableRow1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content" >
+					 </TableRow>
+
+						<TableRow
+							android:id="@+id/tableRow2"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content" >
+
+							<TextView
+							    android:id="@+id/txtStationConnected"
+							    android:layout_width="wrap_content"
+							    android:layout_height="wrap_content"
+							    android:text="STN" />
+							<TextView
+							    android:id="@+id/txtSpace"
+							    android:layout_width="wrap_content"
+							    android:layout_height="wrap_content"
+							    android:text="   " />
+							<TextView
+							    android:id="@+id/txtSimulatorConnected"
+							    android:layout_width="wrap_content"
+							    android:layout_height="wrap_content"
+							    android:text="SIM" />
+
+						</TableRow>
+
+						<TableRow
+							android:id="@+id/tableRow3"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content" >
+						</TableRow>
+
+						<TableRow
+							android:id="@+id/tableRow4"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content" >
+						 </TableRow>
+		</TableLayout>
+		
+		<ScrollView
+				android:id="@+id/ScrollView01"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" >
+				<LinearLayout
+					android:id="@+id/LinearLayout02"
+					android:layout_width="match_parent"
+					android:layout_height="390dp"
+					android:orientation="vertical" >
+					<TextView
+						android:id="@+id/txtBroadcastID"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="Broadcast ID" />
+					<ToggleButton
+						android:id="@+id/tbtnBroadcastID"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="ID" />
+
+					<TextView
+						android:id="@+id/txtBroadcastGPS"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="GPS" />
+
+					<ToggleButton
+						android:id="@+id/tbtnBroadcastGPS"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="GPS" />
+					<TextView
+						android:id="@+id/txtBroadcastAcc"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="Accelerometer" />
+					<ToggleButton
+						android:id="@+id/tbtnBroadcastAcc"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Acc" />
+					<TextView
+						android:id="@+id/txtBroadcastGyro"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="Gyro" />
+
+					<ToggleButton
+						android:id="@+id/tbtnBroadcastGyro"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Gyrp" />
+					<TextView
+						android:id="@+id/txtBroadcastMagnetic"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="Magnetic" />
+					<ToggleButton
+						android:id="@+id/tbtnBroadcastMagnetic"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Magnetic" />
+					<TextView
+						android:id="@+id/txtBroadcastOrientation"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="Orientation" />
+					<ToggleButton
+						android:id="@+id/tbtnBroadcastOrientation"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Orientation" />
+					<TextView
+						android:id="@+id/txtSimulation"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="Simulation" />
+					<ToggleButton
+						android:id="@+id/tbtnSimulation"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Simulation" />
+				</LinearLayout>
+		</ScrollView>
+</LinearLayout>
