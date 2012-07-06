@@ -126,14 +126,18 @@ public class UAVProtocol extends Thread{
 		
 		 String data="";
 		 
+		 if (UAVState.Debug_Active==true)
+			 data +="%DBG#" + UAVState.Debug ;  
+		
+		 
 		 data +=  "%THR#" + Double.toString(UAVState.Throttle)
 				+ "%ELV#" + Double.toString(UAVState.Elevator)
 				+ "%RUD#" + Double.toString(UAVState.Rudder)
 				+ "%AIL#" + Double.toString(UAVState.Aileron);
 		 
+			 
 		 if (UAVState.Accelerometer_Active==true)
-			 data +="%" +
-			 		"ACC#" + Double.toString(UAVState.Accelerometer_X) + "#" + Double.toString(UAVState.Accelerometer_Y) + "#" + Double.toString(UAVState.Accelerometer_Z);
+			 data +="%ACC#" + Double.toString(UAVState.Accelerometer_X) + "#" + Double.toString(UAVState.Accelerometer_Y) + "#" + Double.toString(UAVState.Accelerometer_Z);
 		 else
 			 data +="%";
 		 

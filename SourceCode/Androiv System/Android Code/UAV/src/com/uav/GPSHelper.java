@@ -1,7 +1,16 @@
+/**
+ * @author Mohammad Said Hefny: mohammad.hefny@gmail.com
+ * 
+ **/
 package com.uav;
 
 import android.location.Location;
 
+/**
+ * {@link http://www.movable-type.co.uk/scripts/latlong.html}
+ * 
+ *
+ */
 public class GPSHelper {
 
 
@@ -81,9 +90,9 @@ public class GPSHelper {
     {
         double y = Math.sin(NewLongitude - CurrentLongitude) * Math.cos(NewLatitude);
         double x = Math.cos(CurrentLatitude) * Math.sin(NewLatitude) -
-        Math.sin(CurrentLatitude) * Math.cos(NewLatitude) * Math.cos(NewLatitude - CurrentLongitude);
-
-        return Math.atan2(y, x);
+        Math.sin(CurrentLatitude) * Math.cos(NewLatitude) * Math.cos(NewLongitude - CurrentLongitude);
+        double degree= (Math.toDegrees(Math.atan2(y, x))+360)%360;
+        return degree;
     }
 
 }

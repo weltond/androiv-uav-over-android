@@ -1,10 +1,17 @@
+/*
+ * Author: Mohammad Said Hefny: mohammad.hefny@gmail.com
+ * 
+ */
 package com.uav;
 
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -17,9 +24,12 @@ import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.speech.tts.TextToSpeech;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,8 +39,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity  implements TextToSpeech.OnInitListener 
+{
     
+	private final String WavFolder = Environment.getExternalStorageDirectory()+"/UAV/Wav/";
+	private TextToSpeech mTts;
 	
 	/////////////////UI Attributes
 	private ToggleButton mtbtnBroadCast; 
@@ -40,15 +53,17 @@ public class MainActivity extends Activity {
 	private ToggleButton mtbtnBroadCastMagnetic; 
 	private ToggleButton mtbtnBroadCastOrientation;
 	private ToggleButton mtbtnSimulator;
+	private ToggleButton mtbtnIOIO; 
 	private TextView mtxtBroadCastID; 
 	public TextView mtxtBroadCastGPS; 
 	public TextView mtxtStation;
 	public TextView mtxtSimulation;
+	public TextView mtxtARMConnected;
 	private TextView mtxtBroadCastGyro; 
 	private TextView mtxtBroadCastAcc;
 	private TextView mtxtBroadCastMagnetic; 
 	private TextView mtxtBroadCastOrientation;
-	
+	private TextView mtxtIOIO;
 	private Menu mMainMenu;
 	
 	////////////////EOF UI Attributes
@@ -81,6 +96,7 @@ public class MainActivity extends Activity {
 	
 	private PowerManager.WakeLock mWakeLock ;
 	private PowerManager mPowerManagement; 
+	
 	//////////////EOF Attributes
 	
 	
@@ -196,14 +212,25 @@ public class MainActivity extends Activity {
 			
 	}
 	
+	
 	private void Init()
 	{
+		// Create Folder.
+		File Folder = new File(Environment.getExternalStorageDirectory(), "UAV");
+        if (!Folder.exists()) {
+        	Folder.mkdirs();
+        } 
+        Folder = new File(Environment.getExternalStorageDirectory()+"/UAV", "WAV");
+        if (!Folder.exists()) {
+        	Folder.mkdirs();
+        } 
+        
 		mMe = this;
-		mPowerManagement= (PowerManager) getSystemService(POWER_SERVICE);
-        mWakeLock = mPowerManagement.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "UAV");
-        mWakeLock.acquire();
-        
-        
+		mTts = new TextToSpeech(this, this);
+		
+		 
+		UAVState.IOIOPWMCalibration= IOIOPWMCalibration.Create();
+		IOIOPWMCalibration.ReadCalibrationPreference(getApplication(),UAVState.IOIOPWMCalibration);
 		Logger.Init();
 		GPSLogger.Init();
 		
@@ -216,14 +243,19 @@ public class MainActivity extends Activity {
 		UAVState.GPS_Active=false;
 		UAVState.Orientation_Active=false;
 		
+		
+		UAVState.Debug=" ";
+		
 		setContentView(R.layout.main);
 		
 		mtxtStation= (TextView) findViewById(R.id.txtStationConnected);
 		mtxtSimulation= (TextView) findViewById(R.id.txtSimulatorConnected);
+		mtxtARMConnected = (TextView) findViewById (R.id.txtARMConnected);
 		mtxtStation.setTextColor(Color.rgb(0, 0, 220));
 		mtxtSimulation.setTextColor(Color.rgb(0, 0, 220));
+		mtxtARMConnected.setTextColor(Color.rgb(0, 0, 220));
 	    
-		
+		mtxtIOIO = (TextView) findViewById(R.id.txtIOIO);
 		mtxtBroadCastID = (TextView) findViewById(R.id.txtBroadcastID);
 		mtxtBroadCastGPS = (TextView) findViewById(R.id.txtBroadcastGPS);
 	    mtxtBroadCastGyro = (TextView) findViewById(R.id.txtBroadcastGyro);
@@ -231,6 +263,7 @@ public class MainActivity extends Activity {
 	    mtxtBroadCastMagnetic = (TextView) findViewById(R.id.txtBroadcastMagnetic);
 	    mtxtBroadCastOrientation = (TextView) findViewById(R.id.txtBroadcastOrientation);   
 	    
+	    mtbtnIOIO = (ToggleButton) findViewById (R.id.tbtnIOIO);
 	    mtbtnBroadCast = (ToggleButton) findViewById(R.id.tbtnBroadcastID);
 	    mtbtnBroadCastGPS = (ToggleButton) findViewById(R.id.tbtnBroadcastGPS);
 	    mtbtnBroadCastGyro = (ToggleButton) findViewById(R.id.tbtnBroadcastGyro);
@@ -240,10 +273,10 @@ public class MainActivity extends Activity {
 	    mtbtnSimulator = (ToggleButton) findViewById (R.id.tbtnSimulation);
 	    mMainMenu = (Menu) findViewById(R.menu.mainmenu);
 	    
-	    
-		
+	    try
+		{
 		// Sensors
-		mSensors = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mSensors = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
 		mSensor_Gyro = new Sensor_Gyro();
 		mSensor_Accelerometer = new Sensor_Accelerometer();
 		mSensor_Magnetic = new Sensor_Magnetic();
@@ -256,10 +289,113 @@ public class MainActivity extends Activity {
 		UAVState.RoutePoint = new ArrayList<RoutePoint>();
 		
 		doBindService();
-		
+		}
+		catch (Exception e)
+		{
+			Log.e("UAV", e.getMessage());
+		}
+	    mPowerManagement= (PowerManager) getSystemService(POWER_SERVICE);
+	    mWakeLock = mPowerManagement.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "UAV");
+        mWakeLock.acquire();
+       
+	
 	}
 	
-	
+	   @Override 
+	    protected void onStart()
+	    {
+	    	/**
+	    	 * using data from saved instance we can determine if we need to re-bind to a started service or not.
+	    	 */
+	    	
+	    	super.onStart();
+	    	
+	    	
+		
+			
+	    }
+	     
+	   
+	@Override
+	public void onPause()
+	{
+	  	super.onPause();
+	    	
+	}
+
+	    
+	public void NetCMD_ActiveGPS()
+	{
+	   	if (UAVState.Gyro_Active == true) return ;
+	   	mtbtnBroadCastGPS.setChecked(true);
+	   	ActivateGPS();
+	    	
+	   	return ;
+	}
+	   
+	public void NetCMD_ActiveGyro()
+	{
+	   	if (UAVState.Gyro_Active == true) return ;
+	   	mtbtnBroadCastGyro.setChecked(true);
+	   	ActivateGyro();
+	    	
+	   	return ;
+	}
+	    
+	public void NetCMD_ActiveAcc()
+	{
+	   	if (UAVState.Accelerometer_Active== true) return ;
+	   	mtbtnBroadCastAcc.setChecked(true);
+	   	ActivateAcc();
+	    	
+	   	return ;
+	}
+	    
+    public void NetCMD_ActiveMag()
+	{
+	   	if (UAVState.Magnetic_Active== true) return ;
+	   	mtbtnBroadCastMagnetic.setChecked(true);
+	  	ActivateMag();
+	    	
+	  	return ;
+	 }
+	    
+	 public void NetCMD_ActiveOrientation()
+	 {
+	    if (UAVState.Orientation_Active== true) return ;
+	    mtbtnBroadCastOrientation.setChecked(true);
+	    ActivateOrientation();
+	    	
+	    return ;
+	 }
+	    
+	 public void NetCMD_ActiveSimulator()
+	 {
+	    if (UAVState.Simulator_Active== true) return ;
+	    mtbtnSimulator.setChecked(true);
+	    ActivateSimulator();
+	    	
+	    return ;
+	}
+	    
+	public void NetCMD_ActivateIOIO()
+	{
+		if (UAVState.IOIO_Active== true) return ;
+			mtbtnIOIO.setChecked(true);
+		    ActivateIOIO();
+		    	
+		return ;
+	}
+		
+	public void NetCMD_ReleaseIOIO()
+	{
+	   	if (UAVState.IOIO_Active == false) return ;
+	   	mtbtnIOIO.setChecked(false);
+	   	ReleaseIOIO();
+	    	
+	   	return ;
+	}
+	    
 	public void NetCMD_ReleaseGPS()
 	    {
 	    	if (UAVState.GPS_Active == false) return ;
@@ -314,8 +450,33 @@ public class MainActivity extends Activity {
     	return ;
     }
     
+    protected void ActivateIOIO()
+    {
+    	if (UAVState.IOIO_Active==true) return;
+    	IOIOHardware.Connect();
+    	
+    	mtxtIOIO.setText("IOIO Connected...");
+		
+		UAVState.IOIO_Active=true;
+		NetSendSwitchInfo();
+		
+		speakOut("Yoyo Activated");
+    }
     
-	protected void ReleaseGPS ()
+    protected void ReleaseIOIO()
+	{
+		if (IOIOHardware.mIOIO == null) return ;
+		
+		IOIOHardware.Disconnect();
+		mtxtIOIO.setText("IOIO Disconnected...");
+		
+		UAVState.IOIO_Active=false;
+		NetSendSwitchInfo();
+		
+		speakOut("Yoyo Deactivated");
+	}
+	
+    protected void ReleaseGPS ()
 	{
 		if (UAVState.GPS_Active)
 		{
@@ -326,6 +487,8 @@ public class MainActivity extends Activity {
 		
 		UAVState.GPS_Active = false;
 		NetSendSwitchInfo();
+		
+		speakOut("GPS Deactivated");
 	}
 	
 	protected  void ReleaseGyro ()
@@ -339,7 +502,10 @@ public class MainActivity extends Activity {
 		
 		UAVState.Gyro_Active = false;
 		NetSendSwitchInfo();
+		
+		speakOut("Gyro Deactivated");
 	}
+	
 	
 	protected void ReleaseAcc ()
 	{
@@ -352,6 +518,8 @@ public class MainActivity extends Activity {
 		
 		UAVState.Accelerometer_Active = false;
 		NetSendSwitchInfo();
+		
+		speakOut("Accelerometer Deactivated");
 	}
 	
 	protected void ReleaseOrientation()
@@ -364,6 +532,8 @@ public class MainActivity extends Activity {
 		
 		UAVState.Orientation_Active = false;
 		NetSendSwitchInfo();
+		
+		speakOut("Orientation Deactivated");
 	}
 	
 	protected void ReleaseMag ()
@@ -376,9 +546,11 @@ public class MainActivity extends Activity {
 		
 		UAVState.Magnetic_Active = false;
 		NetSendSwitchInfo();
+		
+		speakOut("Magnetic Deactivated");
 	}
 	
-	 protected void ActivateSimulator()
+	protected void ActivateSimulator()
 	 {
 	    	this.NetCMD_ReleaseGPS();
 	    	this.NetCMD_ReleaseOrientation();
@@ -392,6 +564,8 @@ public class MainActivity extends Activity {
 			
 			UAVState.Simulator_Active = true;
 	    	NetSendSwitchInfo();
+	    	
+	    	speakOut("Simulator Activated");
 	 }
 	    
 	protected void ReleaseSimulator()
@@ -409,6 +583,8 @@ public class MainActivity extends Activity {
 			mComm_FlightGear=null;
 			
 			NetSendSwitchInfo();
+			
+			speakOut("Simulator Deactivated");
 		}
 		catch (Exception e)
 		{
@@ -435,6 +611,8 @@ public class MainActivity extends Activity {
 		mtxtBroadCastID.setText("No Broadcast.");
 		}
 		UAVState.WIFI_Active=false;
+		
+		speakOut("Broadcast Deactivated");
 	}
 	
 	private void ExitApp()
@@ -450,10 +628,16 @@ public class MainActivity extends Activity {
 		GPSLogger.Close();
 		Logger.Close();
 		//mIDProtocol.stop();
-		//mWakeLock.release();
+		mWakeLock.release();
+		
 		//this.closeContextMenu();
 		 // Unbind from the service
-    
+		
+		if (mTts != null) {
+   		 mTts.stop();
+   		 mTts.shutdown();
+        }
+		
 		doUnbindService();
     	stopService (new Intent(MainActivity.this,Comm_TCPServer.class));
     	
@@ -505,7 +689,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-
+    	
         Init();
         
       	
@@ -553,6 +737,7 @@ public class MainActivity extends Activity {
 				
 				if (UAVState.GPS_Active==false)
 				{
+				
 					ActivateGPS();
 				}
 				else
@@ -661,8 +846,8 @@ public class MainActivity extends Activity {
    				
    				if (UAVState.Simulator_Active==true)
    				{
-   				
-   				ActivateSimulator();
+   					
+   				    ActivateSimulator();
    				
    				}
    				else
@@ -677,60 +862,7 @@ public class MainActivity extends Activity {
     }
     
     
-   
-    public void NetCMD_ActiveGPS()
-    {
-    	if (UAVState.Gyro_Active == true) return ;
-    	mtbtnBroadCastGPS.setChecked(true);
-    	ActivateGPS();
-    	
-    	return ;
-    }
-   
-    public void NetCMD_ActiveGyro()
-    {
-    	if (UAVState.Gyro_Active == true) return ;
-    	mtbtnBroadCastGyro.setChecked(true);
-    	ActivateGyro();
-    	
-    	return ;
-    }
-    
-    public void NetCMD_ActiveAcc()
-    {
-    	if (UAVState.Accelerometer_Active== true) return ;
-    	mtbtnBroadCastAcc.setChecked(true);
-    	ActivateAcc();
-    	
-    	return ;
-    }
-    
-    public void NetCMD_ActiveMag()
-    {
-    	if (UAVState.Magnetic_Active== true) return ;
-    	mtbtnBroadCastMagnetic.setChecked(true);
-    	ActivateMag();
-    	
-    	return ;
-    }
-    
-    public void NetCMD_ActiveOrientation()
-    {
-    	if (UAVState.Orientation_Active== true) return ;
-    	mtbtnBroadCastOrientation.setChecked(true);
-    	ActivateOrientation();
-    	
-    	return ;
-    }
-    
-    public void NetCMD_ActiveSimulator()
-    {
-    	if (UAVState.Simulator_Active== true) return ;
-    	mtbtnSimulator.setChecked(true);
-    	ActivateSimulator();
-    	
-    	return ;
-    }
+  
     
     protected void ActivateGPS ()
     {
@@ -742,6 +874,9 @@ public class MainActivity extends Activity {
 	    
 	    UAVState.GPS_Active = true;
 	    NetSendSwitchInfo();
+	    
+	    speakOut ("GPS Activated");
+	    
     }
     
     protected void ActivateGyro()
@@ -755,6 +890,8 @@ public class MainActivity extends Activity {
 		
 		UAVState.Gyro_Active = true;
 	    NetSendSwitchInfo();
+    
+	    speakOut ("Gyro Activated");
     }
     
     protected void ActivateAcc()
@@ -768,6 +905,7 @@ public class MainActivity extends Activity {
 	    UAVState.Accelerometer_Active = true;
 		NetSendSwitchInfo();
 		
+		speakOut ("Accelerometer Activated");
     }
     
     protected void ActivateMag()
@@ -780,6 +918,8 @@ public class MainActivity extends Activity {
 		
 		UAVState.Magnetic_Active = true;
     	NetSendSwitchInfo();
+    	
+    	speakOut ("Magnetic Activated");
     }
     
     protected void ActivateOrientation()
@@ -790,6 +930,8 @@ public class MainActivity extends Activity {
 		mtxtBroadCastOrientation.setText("Orientation Connected.");
 		
 		UAVState.Orientation_Active = true;
+		
+		speakOut ("Orientation Activated");
     }
     
    
@@ -814,6 +956,8 @@ public class MainActivity extends Activity {
 		mtxtBroadCastID.setText("Broadcasting on" + IP);
 		
 		UAVState.WIFI_Active=true;
+		
+		speakOut ("BroadCast Activated");
     }
     
     /**
@@ -832,23 +976,8 @@ public class MainActivity extends Activity {
         doBindService();
     }
     
-    @Override 
-    protected void onStart()
-    {
-    	/**
-    	 * using data from saved instance we can determine if we need to re-bind to a started service or not.
-    	 */
-    	
-    	super.onStart();
-    }
-     
-   
-    @Override
-    public void onPause()
-    {
-    	super.onPause();
-    	
-    }
+    
+ 
       
     @Override
     public void onStop()
@@ -862,9 +991,54 @@ public class MainActivity extends Activity {
     public void onDestroy ()
     {
     	
+    	 if (mTts != null) {
+    		 mTts.stop();
+    		 mTts.shutdown();
+         }
+    	
     	super.onDestroy();
     	
     }
+
+	@Override
+	public void onInit(int status) {
+		// TODO Auto-generated method stub
+		 if (status == TextToSpeech.SUCCESS) {
+			 
+	            int result = mTts.setLanguage(Locale.US);
+	 
+	            if (result == TextToSpeech.LANG_MISSING_DATA
+	                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+	                Log.e("TTS", "This Language is not supported");
+	            } else {
+	                
+	            	//mTts.addSpeech("Androiv Started", WavFolder + "AndroivStarted.wav");
+	            	//mTts.addSpeech("Simulator Activated", WavFolder + "SimulatorActivated.wav");
+	            	//mTts.addSpeech("Simulator Deactivated", WavFolder + "SimulatorDeactivated.wav");
+	            	//mTts.addSpeech("Flight Gear ON", WavFolder + "FlightGearON.wav");
+	            	//mTts.addSpeech("ConnectedToMonitor", WavFolder + "MonitorConnected.wav");
+	            }
+	 
+	        } else {
+	            Log.e("TTS", "Initilization Failed!");
+	        }
+	 
+	}
+	
+	/*@Override
+	public void onUtteranceCompleted(String uttId) {
+	    if (uttId == "end of wakeup message ID") {
+	       // playAnnoyingMusic();
+	    } 
+	}*/
+	
+    public void speakOut (String Text)
+    {
+    	if (mTts == null) return ;
+    	mTts.speak(Text, TextToSpeech.QUEUE_FLUSH, null);
+    }
     
+
     
+
 }

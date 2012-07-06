@@ -1,3 +1,7 @@
+/*
+ * Author: Mohammad Said Hefny: mohammad.hefny@gmail.com
+ * 
+ */
 package com.uav;
 
 import java.io.BufferedReader;
@@ -17,6 +21,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Binder;
 import android.os.IBinder;
+import android.widget.Toast;
 
 public class Comm_TCPServer extends Service {
 
@@ -131,14 +136,14 @@ public class Comm_TCPServer extends Service {
 			
 	        Boolean end = false;
 	        mServerSocket = new ServerSocket(12345);
-	        
+	        /*
 	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
 	            NetworkInterface intf = en.nextElement();
 	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 	                InetAddress inetAddress = enumIpAddr.nextElement();
 	                
 	            }
-	        }
+	        }*/
 	        
 	        while(!end)
 	        {
@@ -161,11 +166,25 @@ public class Comm_TCPServer extends Service {
 			} catch (Exception e) {
 			        // TODO Auto-generated catch block
 			        e.printStackTrace();
-			        mMainActivity.runOnUiThread(SIT_OFF);
+					 
 			}
 		 
 	}
 	
+	
+	/* IOIO DELIGATES */
+	protected Runnable NetCMD_ActiveIOIO = new Runnable() {
+		public void run() {
+			mMainActivity.NetCMD_ActivateIOIO();
+			}
+		};
+	
+	protected Runnable NetCMD_ReleaseIOIO = new Runnable() {
+		public void run() {
+			mMainActivity.NetCMD_ReleaseIOIO();
+			}
+		};
+	/* IOIO END */
 	
 	protected Runnable SIT_ON = new Runnable() {
 		public void run() {
@@ -312,10 +331,41 @@ public class Comm_TCPServer extends Service {
 			}
 					
 		}
-		else
+		else // IOIO COMMANDS
+		if (oCmd[0].compareTo("SET_IOIO")==0)
+		{
+			// switch command
+			if (oCmd[1].compareTo("PWM")==0)
+			{
+				if (oCmd[2].compareTo("APPLY")==0)
+				{	
+					IOIOHardware.GeneratePWM(Integer.parseInt(oCmd[3]),Integer.parseInt(oCmd[4]),Float.parseFloat(oCmd[5]));
+				}
+				else
+				if (oCmd[2].compareTo("STORE")==0)
+				{
+					UAVPreferenceManager.SetPWMSignalForIOIOPort(this,oCmd[3],Integer.parseInt(oCmd[4]),Float.parseFloat(oCmd[5]),Float.parseFloat(oCmd[6]));
+				}
+				else
+				{
+					
+				}
+			}
+		}
+		else // SENSOR SWITCH COMMANDS
 		if (oCmd[0].compareTo("SET_SWT")==0)
 		{
 			// switch command
+			if (oCmd[1].compareTo("IOIO")==0)
+			{
+				if (oCmd[2].compareTo("ON")==0)
+				{	mMainActivity.runOnUiThread(NetCMD_ActiveIOIO);
+				}
+				else
+				{ // OFF
+					mMainActivity.runOnUiThread(NetCMD_ReleaseIOIO);
+				}
+			} else			// switch command
 			if (oCmd[1].compareTo("GPS")==0)
 			{
 				if (oCmd[2].compareTo("ON")==0)

@@ -11,7 +11,8 @@ public final class UAVState {
 	public static boolean Simulator_Active;
 	public static boolean Arming;
 	public static boolean Calibrated;
-	
+	public static boolean IOIO_Active;
+	public static IOIOPWMCalibration[] IOIOPWMCalibration;
 	public static boolean Accelerometer_Active;
 	public static double Accelerometer_X;
 	public static double Accelerometer_Y;
@@ -60,6 +61,8 @@ public final class UAVState {
 	public static double Rudder=0;
 	public static double Aileron=0;
 	
+	public static boolean Debug_Active=true;
+	public static String Debug;
 	public static boolean WIFI_Active;
 	
 }

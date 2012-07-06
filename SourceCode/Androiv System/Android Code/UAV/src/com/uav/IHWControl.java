@@ -1,3 +1,7 @@
+/*
+ * Author: Mohammad Said Hefny: mohammad.hefny@gmail.com
+ * 
+ */
 package com.uav;
 
 import java.io.IOException;
