@@ -1,3 +1,7 @@
+/*
+ * Author: Mohammad Said Hefny: mohammad.hefny@gmail.com
+ * 
+ */
 package com.uav;
 
 import java.io.File;
@@ -67,6 +71,7 @@ public class Logger {
 	public static void Close()
 	{
 		try {
+			if (mSensorsWriter==null) return ;
 			mSensorsWriter.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

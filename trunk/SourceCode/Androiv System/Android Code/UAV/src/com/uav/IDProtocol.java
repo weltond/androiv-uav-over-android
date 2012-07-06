@@ -1,3 +1,7 @@
+/*
+ * Author: Mohammad Said Hefny: mohammad.hefny@gmail.com
+ * 
+ */
 package com.uav;
 
 
@@ -76,17 +80,17 @@ public class IDProtocol extends Thread {
 		      socket.setBroadcast(true);
 		      socket.setSoTimeout(TIMEOUT_MS);
 		
-		      int n=0;
 		      while (mExit==false)
 		      {
 		    	 
-		    	 //listenForResponses(socket);
-		    	 if (n==4) // 4 x TIMEOUT_MS
-		    	 {
-		    		 sendDiscoveryRequest(socket);
-		    		 n=0;
-		    	 }
-		    	 n=n+1;
+		    	 sendDiscoveryRequest(socket);
+		    	
+		    	 try {
+					this.sleep(250, 0);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		      }
 		      
 		      socket.close();

@@ -1,3 +1,7 @@
+/*
+ * Author: Mohammad Said Hefny: mohammad.hefny@gmail.com
+ * 
+ */
 package com.uav;
 
 import android.hardware.Sensor;
@@ -5,6 +9,9 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
 
+/*
+ * pls read http://www.workingfromhere.com/blog/2009/03/30/orientation-sensor-tips-in-android/
+ */
 public class Sensor_Orientation implements SensorEventListener{
 
 	

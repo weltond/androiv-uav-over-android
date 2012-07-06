@@ -3,6 +3,7 @@ package com.uav;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.SocketAddress;
 import java.util.Enumeration;
 
 public class NetHelper {
@@ -40,7 +41,35 @@ public class NetHelper {
 	              }
 	         }
 	      }
-		return InetAddress.getByName("127.0.0.1");
+		return InetAddress.getByName("127.0.0.255");
 		
 	  }
+	  
+	  public static  InetAddress getBroadcastAddressHost() throws IOException {
+			/*
+			   DhcpInfo dhcp = mWifi.getDhcpInfo();
+		    if (dhcp == null) {
+		      Log.d("UAV", "Could not get dhcp info");
+		      return null;
+		    }
+
+		    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+		    byte[] quads = new byte[4];
+		    for (int k = 0; k < 4; k++)
+		      quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+		    return InetAddress.getByAddress(quads);
+		  */
+		    for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+		        NetworkInterface intf = en.nextElement();
+		        for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+		              InetAddress inetAddress = enumIpAddr.nextElement();
+		             if (!inetAddress.isMulticastAddress()) {
+		            	 return inetAddress;
+
+		              }
+		         }
+		      }
+			return InetAddress.getByName("127.0.0.1");
+			
+		  }
 }

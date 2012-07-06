@@ -1,8 +1,13 @@
+/*
+ * Author: Mohammad Said Hefny: mohammad.hefny@gmail.com
+ * 
+ */
 package com.uav;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 
 import android.graphics.Color;
@@ -75,8 +80,7 @@ public class Comm_FlightGear extends Thread implements IHWControl {
 	    try {
 	    	
 		      	 DatagramSocket socket = new DatagramSocket(mFlightGearPortOut);
-		     
-		         while (mExit==false)
+		      	 while (mExit==false)
 			     {
 			    	 listenForInPort(socket);
 			     }
@@ -97,7 +101,8 @@ public class Comm_FlightGear extends Thread implements IHWControl {
 	  private void listenForInPort(DatagramSocket socket) throws IOException {
 		    byte[] buf = new byte[1024];
 		    try {
-		        DatagramPacket packet = new DatagramPacket(buf, buf.length);
+		        DatagramPacket packet = new DatagramPacket(buf, buf.length, 
+		  			  NetHelper.getBroadcastAddressHost(), mFlightGearPortOut);
 		        socket.receive(packet);
 		        String FlightGearOutput = new String(packet.getData(), 0, packet.getLength());
 		        mMainActivity.runOnUiThread(SIM_ON);	

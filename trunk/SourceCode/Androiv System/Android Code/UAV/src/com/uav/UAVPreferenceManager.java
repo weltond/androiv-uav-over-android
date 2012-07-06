@@ -21,6 +21,24 @@ public class UAVPreferenceManager  {
 	 }
 	
 	/**
+	/* Read a boolean setting 
+	**/
+	protected static int ReadSavedPreference (android.content.ContextWrapper contextWrapper, String propertyName, int defaultValue )
+	 {
+		 SharedPreferences settings =  contextWrapper.getSharedPreferences(PREFS_COUNT, 0);
+		 return settings.getInt(propertyName, defaultValue);
+	 }
+	
+	/**
+	/* Read a boolean setting 
+	**/
+	protected static float ReadSavedPreference (android.content.ContextWrapper contextWrapper, String propertyName, float defaultValue )
+	 {
+		 SharedPreferences settings =  contextWrapper.getSharedPreferences(PREFS_COUNT, 0);
+		 return settings.getFloat(propertyName, defaultValue);
+	 }
+	
+	/**
 	/* Read a string setting 
 	**/
 	protected static String ReadSavedPreference (android.content.ContextWrapper contextWrapper, String propertyName, String defaultValue)
@@ -40,6 +58,27 @@ public class UAVPreferenceManager  {
 		 editor.commit();
 	 }
 	
+	/**
+	/* Write an integer setting 
+	**/
+	protected static void WriteSavedPreference (android.content.ContextWrapper contextWrapper,String propertyName, int intValue)
+	 {
+		 SharedPreferences settings = contextWrapper.getSharedPreferences(PREFS_COUNT, 0);
+		 SharedPreferences.Editor editor = settings.edit();
+		 editor.putInt(propertyName, intValue);
+		 editor.commit();
+	 }
+	
+	/**
+	/* Write a float setting 
+	**/
+	protected static void WriteSavedPreference (android.content.ContextWrapper contextWrapper,String propertyName, float floatValue)
+	 {
+		 SharedPreferences settings = contextWrapper.getSharedPreferences(PREFS_COUNT, 0);
+		 SharedPreferences.Editor editor = settings.edit();
+		 editor.putFloat(propertyName, floatValue);
+		 editor.commit();
+	 }
 	/**
 	/* Write a string setting 
 	**/
@@ -119,4 +158,27 @@ public class UAVPreferenceManager  {
 	{
 		WriteSavedPreference(contextWrapper,"UAVProtocolPort",ProtocolPort );
 	}
+
+	public static void SetPWMSignalForIOIOPort (android.content.ContextWrapper contextWrapper,String IOIOPort, int Frequency, float MinDutyCycle, float MaxDutyCycle)
+	{
+		WriteSavedPreference(contextWrapper,"IOIOPWMPortFreq" + IOIOPort ,Frequency);
+		WriteSavedPreference(contextWrapper,"IOIOPWMPortMinDuty" + IOIOPort ,MinDutyCycle);
+		WriteSavedPreference(contextWrapper,"IOIOPWMPortMaxDuty" + IOIOPort ,MaxDutyCycle);
+	}
+	
+	public static int GetUAVProtocolPWMSignalForIOIOPort_Frequency (android.content.ContextWrapper contextWrapper, int PortNum)
+	{
+		return ReadSavedPreference(contextWrapper,"IOIOPWMPortFreq" + String.valueOf(PortNum),0);
+	}
+
+	public static float GetUAVProtocolPWMSignalForIOIOPort_MinDutyCycle (android.content.ContextWrapper contextWrapper, float PortNum)
+	{
+		return ReadSavedPreference(contextWrapper,"IOIOPWMPortMinDuty" + String.valueOf(PortNum),0.0f);
+	}
+
+	public static float GetUAVProtocolPWMSignalForIOIOPort_MaxDutyCycle (android.content.ContextWrapper contextWrapper, float PortNum)
+	{
+		return ReadSavedPreference(contextWrapper,"IOIOPWMPortMaxDuty" + String.valueOf(PortNum),0.0f);
+	}
+	
 }
