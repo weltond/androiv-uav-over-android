@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RC_Control", "RC_Control.csproj", "{3E7D2E2F-38A0-4A37-8801-E844A3C7BCFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E7D2E2F-38A0-4A37-8801-E844A3C7BCFF}.Debug|x86.ActiveCfg = Debug|x86
+		{3E7D2E2F-38A0-4A37-8801-E844A3C7BCFF}.Debug|x86.Build.0 = Debug|x86
+		{3E7D2E2F-38A0-4A37-8801-E844A3C7BCFF}.Release|x86.ActiveCfg = Release|x86
+		{3E7D2E2F-38A0-4A37-8801-E844A3C7BCFF}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
