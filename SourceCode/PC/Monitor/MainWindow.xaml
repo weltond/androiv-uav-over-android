@@ -1,0 +1,21 @@
+﻿<Window x:Class="Monitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="517" Width="811">
+    <Grid>
+        <Expander Header="expander1" Height="100" HorizontalAlignment="Left" Margin="718,-22,0,0" Name="expander1" VerticalAlignment="Top">
+            <Grid />
+        </Expander>
+        <Menu IsMainMenu="True" Height="73" HorizontalAlignment="Left" Name="menu1" VerticalAlignment="Top" Width="777">
+            <MenuItem Header="_File">
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="Online Vehicle..." IsCheckable="True" CommandParameter="onlinevehicle">
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Tools"/>
+            <MenuItem Header="_Window"/>
+            <MenuItem Header="_Help" />
+        </Menu>
+    </Grid>
+</Window>

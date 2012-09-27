@@ -1,0 +1,14 @@
+﻿
+
+Send PC:
+"SETSWT#GPS#ON" turn GPS ON . . confirmation should be recieved [sensor control]
+
+Receive PC:
+1 - Sensor Data
+"ACC#0.009357303#-0.0495964#0.08727932%%GYR#0.0#0.0#0.0%"
+token#1: ACC, GYR, MAG, GPS
+other tokens are data.
+
+2- Switch Sensor Control
+"SWT#ACC#OFF"   confirmation that ACC is turned off.
+"SWT#GPS#ON"    confirmation that GPS is turned on.
