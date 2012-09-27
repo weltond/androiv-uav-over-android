@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<ScrollView android:id="@+id/ScrollView01"
+android:layout_width="fill_parent"
+android:layout_height="390dp">
+
+<LinearLayout
+    android:id="@+id/LinearLayout02"
+    android:layout_width="match_parent"
+    android:layout_height="654dp"
+    android:orientation="vertical" >
+
+<TextView  
+    android:id="@+id/txtBroadcastID"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Broadcast ID"
+    />
+<ToggleButton android:id="@+id/tbtnBroadcastID" android:text="ID" android:layout_height="wrap_content" android:layout_width="wrap_content"></ToggleButton>
+<TextView  
+    android:id="@+id/txtBroadcastGPS"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="GPS"
+    />
+<ToggleButton android:id="@+id/tbtnBroadcastGPS" android:text="GPS" android:layout_height="wrap_content" android:layout_width="wrap_content"></ToggleButton>
+<TextView  
+	android:id="@+id/txtBroadcastAcc"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Accelerometer"
+    />
+<ToggleButton android:id="@+id/tbtnBroadcastAcc" android:text="Acc" android:layout_height="wrap_content" android:layout_width="wrap_content"></ToggleButton>
+<TextView  
+	android:id="@+id/txtBroadcastGyro"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Gyro"
+    />
+<ToggleButton android:id="@+id/tbtnBroadcastGyro" android:text="Gyrp" android:layout_height="wrap_content" android:layout_width="wrap_content"></ToggleButton>
+<TextView  
+	android:id="@+id/txtBroadcastMagnetic"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Magnetic"
+    />
+<ToggleButton android:id="@+id/tbtnBroadcastMagnetic" android:text="Magnetic" android:layout_height="wrap_content" android:layout_width="wrap_content"></ToggleButton>
+<TextView  
+	android:id="@+id/txtBroadcastOrientation"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="Orientation"
+    />
+<ToggleButton android:id="@+id/tbtnBroadcastOrientation" android:text="Orientation" android:layout_height="wrap_content" android:layout_width="wrap_content"></ToggleButton>
+
+<TextView
+    android:id="@+id/txtSimulation"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Simulation" />
+
+<ToggleButton
+    android:id="@+id/tbtnSimulation"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Simulation" />
+</LinearLayout>
+</ScrollView>
+
+</LinearLayout>
