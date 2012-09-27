@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{21D2D063-8D11-4809-99EB-8CEC4C51D904}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controller", "Controller", "{2878B7CF-5187-4BB3-9076-EC2DDEE9D688}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{9E139EB1-8899-4165-B5BC-1802F154BDFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simulator", "Simulator", "{76195CDB-84CB-4445-AF99-E850E507B4A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FgfsSharp", "Simulator\FlightGearInterface\FgfsSharp.csproj", "{2517B49B-63D0-45E6-91EC-2A1A136847BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMapTools", "Lib\GMapTools\GMapTools.csproj", "{99061C10-8981-4392-ACB5-A79EC5164ADA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE}.Release|x86.ActiveCfg = Release|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{99061C10-8981-4392-ACB5-A79EC5164ADA}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{99061C10-8981-4392-ACB5-A79EC5164ADA} = {9E139EB1-8899-4165-B5BC-1802F154BDFB}
+		{2517B49B-63D0-45E6-91EC-2A1A136847BE} = {76195CDB-84CB-4445-AF99-E850E507B4A2}
+	EndGlobalSection
+EndGlobal
